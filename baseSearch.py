@@ -33,6 +33,7 @@ class baseSearch:
         path.append(current)
         for i in range(len(path) - 1, -1, -1):
             print(f'({path[i].x}, {path[i].y})')
+        print(f'Quantidade de Nodes gerados: {len(self.genNodes)} ')
 
     def f1(self, node : Node) -> Node:
        new_x = node.x - 1 if node.x >= 1 else 0
