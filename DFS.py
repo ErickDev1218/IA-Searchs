@@ -11,34 +11,36 @@ class DFS(baseSearch): # Herança
     
     
     def doDFS(self):
-        if self.isObjective(self.root):
-            print('Objective finded!')
-            self.findPath(self.root)
-            return
+        if self.root == None or self.final == None:
+            print('Error: some limit has overflow.')
+            return 
         
         self.stack.append(self.root)
 
         # Main loop
         while self.stack:
-            self.currentNode = self.stack.pop() 
-            self.visitedNodes.append(self.currentNode)    
+            self.currentNode = self.stack.pop()
+            if self.currentNode is not None:
+                self.visitedNodes.append(self.currentNode)    
 
-            if self.isObjective(self.currentNode):
-                print('Objective finded!')
-                print(self.currentNode.x, self.currentNode.y)
-                self.findPath(self.currentNode)
-                return
-            
-            n1 = self.f1(self.currentNode)
-            n2 = self.f2(self.currentNode)
-            n3 = self.f3(self.currentNode)
-            n4 = self.f4(self.currentNode)
-            neighbors = [n1, n2, n3, n4]
+                if self.isObjective(self.currentNode):
+                    print('Objective finded!')
+                    self.findPath(self.currentNode)
+                    return
+                
+                n1 = self.f1(self.currentNode)
+                n2 = self.f2(self.currentNode)
+                n3 = self.f3(self.currentNode)
+                n4 = self.f4(self.currentNode)
+                neighbors = [n1, n2, n3, n4]
 
-            for neighbor in neighbors:
-                if self.findNode(neighbor):
-                    self.stack.append(neighbor)
-                    self.genNodes.append(neighbor)
+                for neighbor in neighbors:
+                    if neighbor is not None:
+                        self.genNodes.append(neighbor)
+                    if neighbor is not None and self.findNode(neighbor):
+                        self.stack.append(neighbor)
+            else:
+                continue
 
 
 
