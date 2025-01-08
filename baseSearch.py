@@ -2,7 +2,7 @@ from Node import Node
 
 
 class baseSearch:
-    def __init__(self, iniX : int, iniY : int, destX : int, destY : int):
+    def __init__(self, iniX : int, iniY : int, destX : int, destY : int, typeCost : int):
         print('Base search initialized')
         if self.limit(iniX,iniY):
             self.root = Node(iniX,iniY)
@@ -16,6 +16,54 @@ class baseSearch:
         self.genNodes.append(self.root)
         self.visitedNodes = []
         self.currentNode = None
+        self.typeCost = typeCost
+        self.costFunc = self.choiceFunc(typeCost)
+
+    def choiceFunc(self, choice : int):
+        if choice == 1:
+            return self.__c1
+        elif choice == 2:
+            return self.__c2
+        elif choice == 3:
+            return self.__c3
+        elif choice == 4:
+            return self.__c4
+        else:
+            return None
+        
+    def __c1(self, node : Node, direction = -1):
+        node.cost += 10
+
+    def __c2(self, node : Node, direction = -1):
+        if direction == 3 or direction == 4:
+            node.cost += 10
+        elif direction == 1 or direction == 2:
+            node.cost += 15
+        else:
+            return None
+        
+    def __c3(self, node : Node, direction = -1):
+        if direction == 3 or direction == 4:
+            node.cost += 10
+        elif direction == 1 or direction == 2:
+            # c3(t) = 10 + (|5 − t| mod 6)
+            # onde t é o número passos (arestas) no caminho da raiz da árvore de busca até o estado que está sendo avaliado
+            x = 10 + (abs(5 - node.deep) % 6)
+            node.cost += x
+        else:
+            return None
+        
+    def __c4(self, node : Node, direction = -1):
+        if direction == 3 or direction == 4:
+            node.cost += 10
+        elif direction == 1 or direction == 2:
+            # c4(t) = 5 + (|10 − t| mod 11)
+            # onde t é o número passos (arestas) no caminho da raiz da árvore de busca até o estado que está sendo avaliado
+
+            x = 10 + (abs(10 - node.deep) % 11)
+            node.cost += x
+        else:
+            return None
 
     def isObjective(self, node : Node) -> bool:
         if node.x == self.final.x and node.y == self.final.y:
@@ -43,12 +91,12 @@ class baseSearch:
             
         path.append(current)
         for i in range(len(path) - 1, -1, -1):
-            if i == 0:  # Último elemento
+            if i == 0:
                 print(f'({path[i].x}, {path[i].y})', end='')
             else:
                 print(f'({path[i].x}, {path[i].y})', end=' -> ')
 
-        print()  # Adiciona uma nova linha após o caminho
+        print()
         print(f'Generated nodes: {len(self.genNodes)}')
         print(f'Level: {node.deep}')
 
@@ -75,4 +123,4 @@ class baseSearch:
            return Node(node.x, node.y + 1, node)
         else: 
            return None
-        
+    

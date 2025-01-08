@@ -3,8 +3,8 @@ from baseSearch import baseSearch
 
 class DFS(baseSearch): # Herança
 
-    def __init__(self,iniX : int,iniY : int, destX : int, destY : int):
-        super().__init__(iniX,iniY,destX,destY)
+    def __init__(self,iniX : int,iniY : int, destX : int, destY : int, typeCost : int):
+        super().__init__(iniX,iniY,destX,destY,typeCost)
         # Deep search uses one stack
         self.stack = []
 
@@ -39,6 +39,7 @@ class DFS(baseSearch): # Herança
                         self.genNodes.append(neighbor)
                     if neighbor is not None and self.findNode(neighbor):
                         self.stack.append(neighbor)
+                        self.currentNode.sons.append(neighbor)
             else:
                 continue
 

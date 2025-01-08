@@ -39,6 +39,6 @@ class BFS(baseSearch):  # Herança
                         self.genNodes.append(neighbor)
                     if neighbor is not None and self.findNode(neighbor):
                         self.queue.append(neighbor)  
-                        
+                        self.currentNode.sons.append(neighbor)
             else:
                 continue
