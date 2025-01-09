@@ -17,9 +17,9 @@ class baseSearch:
         self.visitedNodes = []
         self.currentNode = None
         self.typeCost = typeCost
-        self.costFunc = self.choiceFunc(typeCost)
+        self.costFunc = self.__choiceFunc(typeCost)
 
-    def choiceFunc(self, choice : int):
+    def __choiceFunc(self, choice : int):
         if choice == 1:
             return self.__c1
         elif choice == 2:
@@ -59,7 +59,6 @@ class baseSearch:
         elif direction == 1 or direction == 2:
             # c4(t) = 5 + (|10 − t| mod 11)
             # onde t é o número passos (arestas) no caminho da raiz da árvore de busca até o estado que está sendo avaliado
-
             x = 10 + (abs(10 - node.deep) % 11)
             node.cost += x
         else:
@@ -99,6 +98,7 @@ class baseSearch:
         print()
         print(f'Generated nodes: {len(self.genNodes)}')
         print(f'Level: {node.deep}')
+        print(f'Path cost: {node.cost}')
 
     def f1(self, node : Node) -> Node:
        if node.x - 1 >= 0 :
