@@ -1,8 +1,8 @@
 from Node import Node
-
+import math
 
 class baseSearch:
-    def __init__(self, iniX : int, iniY : int, destX : int, destY : int, typeCost : int):
+    def __init__(self, iniX : int, iniY : int, destX : int, destY : int, typeCost : int = -1, heuristicCost : int = -1):
         print('Base search initialized')
         if self.limit(iniX,iniY):
             self.root = Node(iniX,iniY)
@@ -17,7 +17,35 @@ class baseSearch:
         self.visitedNodes = []
         self.currentNode = None
         self.typeCost = typeCost
+        self.HeuristicCost = heuristicCost
         self.costFunc = self.__choiceFunc(typeCost)
+        self.HeuristicFunc = self.huristicFunc(heuristicCost)
+        
+    def huristicFunc(self, choice : int):
+        if choice == 1:
+            return self.__h1
+        elif choice == 2:
+            return self.__h2
+        else:
+            return None
+        
+    def __h1(self, node : Node, direction = -1):
+        x1 = node.x
+        y1 = node.y
+        x2 = self.root.x
+        y2 = self.root.y
+        return math.floor(
+            math.sqrt(
+                math.pow(abs(x1-x2),2) + math.pow(abs(y1-y2),2)
+            )
+        )
+
+    def __h2(self, node : Node, direction = -1):
+        x1 = node.x
+        y1 = node.y
+        x2 = self.root.x
+        y2 = self.root.y 
+        return abs(x1 - x2) + abs(y1 - y2)
 
     def __choiceFunc(self, choice : int):
         if choice == 1:
@@ -59,7 +87,7 @@ class baseSearch:
         elif direction == 1 or direction == 2:
             # c4(t) = 5 + (|10 − t| mod 11)
             # onde t é o número passos (arestas) no caminho da raiz da árvore de busca até o estado que está sendo avaliado
-            x = 10 + (abs(10 - node.deep) % 11)
+            x = 5 + (abs(10 - node.deep) % 11)
             node.cost += x
         else:
             return None
@@ -74,9 +102,16 @@ class baseSearch:
         if (x > 30 or x < 0) or (y > 30 or y < 0):
             return False
         return True
-
+    
+        
     def findNode(self, node : Node) -> bool:
         for n in self.visitedNodes:
+            if(n.x == node.x and n.y == node.y):
+                return False
+        return True
+    
+    def findCreateNode(self, node : Node) -> bool:
+        for n in self.genNodes:
             if(n.x == node.x and n.y == node.y):
                 return False
         return True
