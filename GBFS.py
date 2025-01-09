@@ -11,7 +11,8 @@ class GBFS(baseSearch):
         if self.root == None or self.final == None:
             print('Error: some limit has overflow.')
             return
-        heapq.heappush(self.heap, (self.heuristicFunc(self.root), self.root))  # Começa com o nó inicial        
+        #Primeiro elemento da heap é o root
+        heapq.heappush(self.heap, (self.heuristicFunc(self.root), self.root))      
         while self.heap:
             #Tupla de (Distancia ate o no, No)
             _, currentNode = heapq.heappop(self.heap)
