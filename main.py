@@ -4,10 +4,10 @@ from Node import Node
 import heapq
 from baseSearch import baseSearch
 from Dijkstra import Dijkstra
+from GBFS import GBFS
 
 def main():
-    d = Dijkstra(0,0,3,8,1)
-    d.doDijkstra()
-
+    g = GBFS(0,0,1,1,1,1)
+    g.doGBFS()
 
 main()

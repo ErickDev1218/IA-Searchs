@@ -47,7 +47,7 @@ class GBFS(baseSearch):
                     if neighbor is not None and self.findNode(neighbor):
                         #Não está privada
                         self.costFunc(neighbor,i) #Coloca o custo na função
-                        neighbor.cost_to_target = self.huristicFunc(neighbor)
+                        neighbor.costToTarget = self.heuristicFunc(neighbor)
                         #heapq.heappush(self.heap,(neighbor, neighbor.cost_to_target))
                         heapq.heappush(self.heap,neighbor)
                         no = heapq.heappop(self.heap)

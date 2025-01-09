@@ -6,7 +6,7 @@ class Node:
         self.deep = 1 if dad is None else dad.deep + 1
         self.cost = 0 if dad is None else dad.cost
         self.sons = []
-        self.cost_to_target = 0
+        self.costToTarget = 0
 
     #Sobrecarga do operador < para usar na heap
     def __lt__(self, node : 'Node'):

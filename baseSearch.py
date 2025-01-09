@@ -17,11 +17,11 @@ class baseSearch:
         self.visitedNodes = []
         self.currentNode = None
         self.typeCost = typeCost
-        self.HeuristicCost = heuristicCost
+        self.heuristicCost = heuristicCost
         self.costFunc = self.__choiceFunc(typeCost)
-        self.HeuristicFunc = self.huristicFunc(heuristicCost)
+        self.heuristicFunc = self.__huristicFunc(heuristicCost)
         
-    def huristicFunc(self, choice : int):
+    def __huristicFunc(self, choice : int):
         if choice == 1:
             return self.__h1
         elif choice == 2:
