@@ -3,8 +3,8 @@ import heapq
 
 # Greedy Best-First Search
 class GBFS(baseSearch):
-    def __init__(self, iniX, iniY, destX, destY, typeCost, typeHeuristc):
-        super().__init__(iniX, iniY, destX, destY, typeCost, typeHeuristc)
+    def __init__(self, iniX : int, iniY: int, destX: int, destY: int, typeCost: int, typeHeuristic: int):
+        super().__init__(iniX, iniY, destX, destY, typeCost, typeHeuristic)
         self.heap = []  # Heap de prioridade com os custos de cada nó até o alvo            
     
     def doGBFS(self):
