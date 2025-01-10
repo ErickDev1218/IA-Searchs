@@ -3,7 +3,6 @@ import math
 
 class baseSearch:
     def __init__(self, iniX : int, iniY : int, destX : int, destY : int, typeCost : int = -1, heuristicCost : int = -1):
-        print('Base search initialized')
         if self.limit(iniX,iniY):
             self.root = Node(iniX,iniY)
         else:
@@ -120,6 +119,11 @@ class baseSearch:
             current = current.dad
             
         path.append(current)
+
+        print(f'Initial node: ({self.root.x},{self.root.y})')
+        print(f'Objective node: ({self.final.x},{self.final.y})')
+        
+        print('Path found:')
         for i in range(len(path) - 1, -1, -1):
             if i == 0:
                 print(f'({path[i].x}, {path[i].y})', end='')
@@ -127,9 +131,11 @@ class baseSearch:
                 print(f'({path[i].x}, {path[i].y})', end=' -> ')
 
         print()
-        print(f'Generated nodes: {len(self.genNodes)}')
-        print(f'Level: {node.deep}')
+        
         print(f'Path cost: {node.cost}')
+        print(f'Generated nodes: {len(self.genNodes)}')
+        print(f'Visited nodes: {len(self.visitedNodes)}')
+
 
     def f1(self, node : Node) -> Node:
        if node.x - 1 >= 0 :

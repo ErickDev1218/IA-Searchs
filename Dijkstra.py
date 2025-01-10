@@ -45,6 +45,8 @@ class Dijkstra(baseSearch):
                         self.genNodes.append(neighbor)
             else:
                 continue
+            
+        print("Path not found")
 
 
 
