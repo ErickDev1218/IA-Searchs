@@ -7,7 +7,12 @@ from Dijkstra import Dijkstra
 from GBFS import GBFS
 
 def main():
-    g = GBFS(0,0,1,1,1,1)
+    # d = Dijkstra(0,0,3,8,1)
+    # d.doDijkstra()
+    g = GBFS(0,0,2,2,3,1)
     g.doGBFS()
+    # (10, No.cost = 11)
+    # (11, no.cost = 10)
+
 
 main()

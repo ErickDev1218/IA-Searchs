@@ -19,9 +19,11 @@ class baseSearch:
         self.typeCost = typeCost
         self.heuristicCost = heuristicCost
         self.costFunc = self.__choiceFunc(typeCost)
-        self.heuristicFunc = self.__huristicFunc(heuristicCost)
+
+        self.heuristicFunc = self.__heuristicFunc(heuristicCost)
         
-    def __huristicFunc(self, choice : int):
+    def __heuristicFunc(self, choice : int):
+
         if choice == 1:
             return self.__h1
         elif choice == 2:
@@ -32,20 +34,20 @@ class baseSearch:
     def __h1(self, node : Node, direction = -1):
         x1 = node.x
         y1 = node.y
-        x2 = self.root.x
-        y2 = self.root.y
+        x2 = self.final.x
+        y2 = self.final.y
         return math.floor(
             math.sqrt(
                 math.pow(abs(x1-x2),2) + math.pow(abs(y1-y2),2)
-            )
+            ) * 10
         )
-
+    #Distancia do nó atual até o nó alvo
     def __h2(self, node : Node, direction = -1):
         x1 = node.x
         y1 = node.y
-        x2 = self.root.x
-        y2 = self.root.y 
-        return abs(x1 - x2) + abs(y1 - y2)
+        x2 = self.final.x
+        y2 = self.final.y
+        return (abs(x1 - x2) + abs(y1 - y2)) * 10
 
     def __choiceFunc(self, choice : int):
         if choice == 1:
@@ -106,12 +108,6 @@ class baseSearch:
         
     def findNode(self, node : Node) -> bool:
         for n in self.visitedNodes:
-            if(n.x == node.x and n.y == node.y):
-                return False
-        return True
-    
-    def findCreateNode(self, node : Node) -> bool:
-        for n in self.genNodes:
             if(n.x == node.x and n.y == node.y):
                 return False
         return True

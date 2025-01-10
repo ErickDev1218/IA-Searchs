@@ -1,32 +1,36 @@
 from baseSearch import baseSearch
 import heapq
+import itertools
 
-#Greedy Best-First Search
+# Greedy Best-First Search
 class GBFS(baseSearch):
-    def __init__(self, iniX, iniY, destX, destY, typeCost, typeHeuristc):
-        super().__init__(iniX, iniY, destX, destY, typeCost, typeHeuristc)
-        self.queue = [] # Queue para percorrer em largura
-        self.heap = []  #Heap de prioridade com os custo de cada node até o alvo
+    def __init__(self, iniX : int, iniY: int, destX: int, destY: int, typeCost: int, typeHeuristic: int):
+        super().__init__(iniX, iniY, destX, destY, typeCost, typeHeuristic)
+        self.queue = []  # Lista que substitui a heap
+        self.counter = itertools.count()  # Para manter a ordem de geração dos nós          
+    
+    # Funcoes adicionais para corrigir a falha da heap que estava comparando pela heuristica e, caso empate,
+    # estava comparando pelo custo. Agora, caso a heuristica empate, o próximo critério é a ordem de criação.
+    def add_to_queue(self, node):
+        # Adiciona o nó à lista com os critérios desejados
+        creation_order = next(self.counter)
+        self.queue.append((node.costToTarget, creation_order, node))
+        # Ordena a lista por heurística e depois pela ordem de geração
+        self.queue.sort(key=lambda x: (x[0], x[1]))
+
+    def pop_from_queue(self):
+        # Remove e retorna o próximo nó
+        return self.queue.pop(0) if self.queue else None
     
     def doGBFS(self):
         if self.root == None or self.final == None:
             print('Error: some limit has overflow.')
             return
-        self.queue.append(self.root)
-        
+        #Primeiro elemento da heap é o root
+        self.add_to_queue(self.root)     
         while self.queue:
-            """
-            Tire o primeiro elemento da fila
-                se o elemento for o buscado:
-                    mostre o caminho
-                se nao 
-                gere n1, n2 ,n3 ,n4 e defina suas distancias até o targe
-                para cada no gerado veja se ele nao eh nulo e coloque na fila de prioridade:
-                    pegue o primeiro elemento da fila(menor distancia) e o coloque na fila
-            
-            
-            """
-            self.currentNode = self.queue.pop(0)
+            #Tupla de (Distancia ate o no, No)
+            _,_, self.currentNode = self.pop_from_queue()
             if self.currentNode is not None:
                 self.visitedNodes.append(self.currentNode)
 
@@ -41,20 +45,17 @@ class GBFS(baseSearch):
                 n4 = self.f4(self.currentNode)
                 neighbors = [n1, n2, n3, n4]
 
-                for i, neighbor in enumerate(neighbors, start=1):
-                    if neighbor is not None and self.findCreateNode(neighbor):
+                for i,neighbor in enumerate(neighbors,start=1):
+                    if neighbor is not None:
                         self.genNodes.append(neighbor)
                     if neighbor is not None and self.findNode(neighbor):
-                        #Não está privada
-                        self.costFunc(neighbor,i) #Coloca o custo na função
+                        # Atualiza o custo do caminho de acordo com a costFunc
+                        self.costFunc(neighbor, i)
+                        # Calcular a distância até o alvo
                         neighbor.costToTarget = self.heuristicFunc(neighbor)
-                        #heapq.heappush(self.heap,(neighbor, neighbor.cost_to_target))
-                        heapq.heappush(self.heap,neighbor)
-                        no = heapq.heappop(self.heap)
-                        self.queue.append(no)
-                        heapq.heapify(self.heap)
-                        self.heap.clear()
-                        #print(neighbor.cost_to_Target)
+
+                        self.add_to_queue(neighbor)
+
                         self.currentNode.sons.append(neighbor)
             else:
                 continue
