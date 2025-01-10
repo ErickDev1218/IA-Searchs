@@ -53,9 +53,7 @@ class GBFS(baseSearch):
                         self.costFunc(neighbor, i)
                         # Calcular a distância até o alvo
                         neighbor.costToTarget = self.heuristicFunc(neighbor)
-
                         self.add_to_queue(neighbor)
-
                         self.currentNode.sons.append(neighbor)
             else:
                 continue

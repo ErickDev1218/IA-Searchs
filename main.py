@@ -9,7 +9,7 @@ from GBFS import GBFS
 def main():
     # d = Dijkstra(0,0,3,8,1)
     # d.doDijkstra()
-    g = GBFS(0,0,2,2,3,1)
+    g = GBFS(0,0,2,2,4,1)
     g.doGBFS()
     # (10, No.cost = 11)
     # (11, no.cost = 10)
