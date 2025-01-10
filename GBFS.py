@@ -55,6 +55,7 @@ class GBFS(baseSearch):
                         neighbor.costToTarget = self.heuristicFunc(neighbor)
 
                         self.add_to_queue(neighbor)
+
                         self.currentNode.sons.append(neighbor)
             else:
                 continue

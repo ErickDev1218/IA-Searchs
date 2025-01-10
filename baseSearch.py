@@ -19,9 +19,11 @@ class baseSearch:
         self.typeCost = typeCost
         self.heuristicCost = heuristicCost
         self.costFunc = self.__choiceFunc(typeCost)
+
         self.heuristicFunc = self.__heuristicFunc(heuristicCost)
         
     def __heuristicFunc(self, choice : int):
+
         if choice == 1:
             return self.__h1
         elif choice == 2:
