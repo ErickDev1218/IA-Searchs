@@ -9,8 +9,13 @@ class Dijkstra(baseSearch):
         self.heap = []
 
     def doDijkstra(self):
+        if self.root == None or self.final == None:
+            print('Error: some limit has overflow.')
+            return 
+        
         # Nesse momento o nó com menor custo é a propria raiz com custo 0
         heapq.heappush(self.heap,self.root)
+        
         while self.heap:
             # Removo o elemento com o menor custo
             self.currentNode = heapq.heappop(self.heap)

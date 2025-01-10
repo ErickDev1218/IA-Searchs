@@ -110,12 +110,6 @@ class baseSearch:
                 return False
         return True
     
-    def findCreateNode(self, node : Node) -> bool:
-        for n in self.genNodes:
-            if(n.x == node.x and n.y == node.y):
-                return False
-        return True
-    
     def findPath(self, node : Node):
         current = node
         path = []
