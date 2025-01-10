@@ -57,3 +57,4 @@ class GBFS(baseSearch):
                         self.currentNode.sons.append(neighbor)
             else:
                 continue
+        print("Path not found")

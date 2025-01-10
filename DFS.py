@@ -43,7 +43,7 @@ class DFS(baseSearch): # Herança
             else:
                 continue
 
-
+        print("Path not found")
 
 
             

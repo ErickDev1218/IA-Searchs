@@ -42,3 +42,5 @@ class BFS(baseSearch):  # Herança
                         self.currentNode.sons.append(neighbor)
             else:
                 continue
+            
+        print("Path not found")
