@@ -31,7 +31,7 @@ class GBFS(baseSearch):
         while self.queue:
             #Tupla de (Distancia ate o no, No)
             _,_, self.currentNode = self.pop_from_queue()
-            if self.currentNode is not None:
+            if self.currentNode is not None and self.findNode(self.currentNode):
                 self.visitedNodes.append(self.currentNode)
 
                 if self.isObjective(self.currentNode):

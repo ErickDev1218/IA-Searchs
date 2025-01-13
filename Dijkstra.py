@@ -19,11 +19,11 @@ class Dijkstra(baseSearch):
         while self.heap:
             # Removo o elemento com o menor custo
             self.currentNode = heapq.heappop(self.heap)
-            if self.currentNode is not None:
+            if self.currentNode is not None and self.findNode(self.currentNode):
                 self.visitedNodes.append(self.currentNode)
 
                 if self.isObjective(self.currentNode):
-                    print('Objective finded!')
+                    print('Objective found!')
                     self.findPath(self.currentNode)
                     return
 
