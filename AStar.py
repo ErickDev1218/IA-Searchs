@@ -28,32 +28,41 @@ class AStar(baseSearch):
         #Primeiro elemento da heap é o root
         self.add_to_queue(self.root)     
         while self.queue:
-            #Tupla de (Distancia ate o no, No)
+            # Remocao da tripla de (Distancia ate o no, ordem de criacao, nó)
             _,_, self.currentNode = self.pop_from_queue()
 
+            # Expansao da coordenada
             if self.currentNode is not None and self.findNode(self.currentNode):
+                # Marca como visitada
                 self.visitedNodes.append(self.currentNode)
             
+                # Checa se não é o objetivo
                 if self.isObjective(self.currentNode):
                     print('Objective found!')
                     self.findPath(self.currentNode)
                     return
 
-                n1 = self.f1(self.currentNode)
-                n2 = self.f2(self.currentNode)
-                n3 = self.f3(self.currentNode)
-                n4 = self.f4(self.currentNode)
-                neighbors = [n1, n2, n3, n4]
+                # Gera as coordenadas vizinhas
+                neighbors = [
+                    self.f1(self.currentNode),
+                    self.f2(self.currentNode),
+                    self.f3(self.currentNode),
+                    self.f4(self.currentNode)
+                ]
 
                 for i,neighbor in enumerate(neighbors,start=1):
                     if neighbor is not None:
+                        # Marca o nó como nó gerado
                         self.genNodes.append(neighbor)
+                    # Verifica se o nó já foi expandido
                     if neighbor is not None and self.findNode(neighbor):
-                        # Atualiza o custo do caminho de acordo com a costFunc
+                        # Atualiza o custo do caminho de acordo com a funcao de custo 
                         self.costFunc(neighbor, i)
-                        # Calcular o f(n) = g(n) + h(n)
+                        # Calcula o f(n) = g(n) + h(n)
                         neighbor.costToTarget = self.heuristicFunc(neighbor) + neighbor.cost
+                        # Adiciona a fila
                         self.add_to_queue(neighbor)
+                        # Coloca o nó na lista dos filhos do pai
                         self.currentNode.sons.append(neighbor)
             else:
                 continue

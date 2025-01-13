@@ -5,7 +5,7 @@ from baseSearch import baseSearch
 class Dijkstra(baseSearch):
     def __init__(self, iniX : int, iniY : int, destX : int, destY : int, typeCost : int):
         super().__init__(iniX,iniY,destX,destY,typeCost)
-        # Dijkstra uses a min heap
+        # Dijkstra usa uma heap minima
         self.heap = []
 
     def doDijkstra(self):
@@ -13,21 +13,26 @@ class Dijkstra(baseSearch):
             print('Error: some limit has overflow.')
             return 
         
-        # Nesse momento o nó com menor custo é a propria raiz com custo 0
+        # Coloca a coordenada inicial na heap
         heapq.heappush(self.heap,self.root)
         
+        # Main loop
         while self.heap:
-            # Removo o elemento com o menor custo
+            # Remove a coordenada da heap
             self.currentNode = heapq.heappop(self.heap)
+
+            # Expansao da coordenada
             if self.currentNode is not None and self.findNode(self.currentNode):
+                # Marca como visitada
                 self.visitedNodes.append(self.currentNode)
 
+                # Checa se não é o objetivo
                 if self.isObjective(self.currentNode):
                     print('Objective found!')
                     self.findPath(self.currentNode)
                     return
 
-                
+                # Gera as coordenadas vizinhas
                 neighbors = [
                     self.f1(self.currentNode),
                     self.f2(self.currentNode),
@@ -36,13 +41,15 @@ class Dijkstra(baseSearch):
                 ]
 
                 for i, neighbor in enumerate(neighbors, start=1):
+                    # Verifica se o nó já foi expandido
                     if neighbor is not None and self.findNode(neighbor):
-                        # Atualizar o custo do vizinho
+                        # Atualizar o custo da coordenada vizinha
                         self.costFunc(neighbor, i)
-                        # Adicionar à heap
+                        # Adiciona à heap
                         heapq.heappush(self.heap, neighbor)
-                        # Memorizar o nó gerado
+                        # Marca o nó como gerado e coloca o nó na lista dos filhos do pai
                         self.genNodes.append(neighbor)
+                        self.currentNode.sons.append(neighbor)
             else:
                 continue
             

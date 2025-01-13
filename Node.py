@@ -1,3 +1,4 @@
+# Classe usada para guardar cada coordenada do plano
 class Node:
     def __init__(self, xValue : int, yValue : int, dad : 'Node' = None):
         self.x = xValue
