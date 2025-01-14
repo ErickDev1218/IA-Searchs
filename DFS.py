@@ -1,16 +1,18 @@
 from Node import Node
 from baseSearch import baseSearch
+import random
 
 class DFS(baseSearch): # Herança
 
-    def __init__(self,iniX : int,iniY : int, destX : int, destY : int, typeCost : int):
+    def __init__(self,iniX : int,iniY : int, destX : int, destY : int, typeCost : int, random : bool = False):
         super().__init__(iniX,iniY,destX,destY,typeCost)
+        self.random = random
         # Busca em profundidade usa uma pilha
         self.stack = []
 
     
     
-    def doDFS(self):
+    def Do(self):
 
         if self.root == None or self.final == None:
             print('Error: some limit has overflow.')
@@ -30,27 +32,33 @@ class DFS(baseSearch): # Herança
 
                 # Checa se não é o objetivo
                 if self.isObjective(self.currentNode):
-                    print('Objective finded!')
+                    print('Objective found!')
                     self.findPath(self.currentNode)
                     return
                 
                 # Gera as coordenadas vizinhas
                 neighbors = [
-                    self.f1(self.currentNode),
-                    self.f2(self.currentNode),
-                    self.f3(self.currentNode),
-                    self.f4(self.currentNode)
+                    (1,self.f1(self.currentNode)),
+                    (2,self.f2(self.currentNode)),
+                    (3,self.f3(self.currentNode)),
+                    (4,self.f4(self.currentNode))
                 ]
 
-                for neighbor in neighbors:
+                if self.random:
+                    random.shuffle(neighbors)
+
+                for i,neighbor in neighbors:
                     if neighbor is not None:
                         # Marca o nó como nó gerado
                         self.genNodes.append(neighbor)
                     # Verifica se o nó já foi expandido
                     if neighbor is not None and self.findNode(neighbor):
+                        # Atualiza o custo
+                        self.costFunc(neighbor,i)
                         # Coloca o nó na pilha e coloca o nó na lista dos filhos do pai
                         self.stack.append(neighbor)
                         self.currentNode.sons.append(neighbor)
+
             else:
                 continue
 

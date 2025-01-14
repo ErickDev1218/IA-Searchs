@@ -21,7 +21,7 @@ class AStar(baseSearch):
         # Remove e retorna o próximo nó
         return self.queue.pop(0) if self.queue else None
     
-    def doAStar(self):
+    def Do(self):
         if self.root == None or self.final == None:
             print('Error: some limit has overflow.')
             return

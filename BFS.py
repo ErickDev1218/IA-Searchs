@@ -1,16 +1,18 @@
 from Node import Node
 from baseSearch import baseSearch
+import random
 
 class BFS(baseSearch):  # Herança
 
-    def __init__(self, iniX: int, iniY: int, destX: int, destY: int):
-        super().__init__(iniX, iniY, destX, destY)
+    def __init__(self, iniX: int, iniY: int, destX: int, destY: int, typeCost : int, random : bool = False):
+        super().__init__(iniX, iniY, destX, destY, typeCost)
+        self.random = random
         # Busca em largura usa uma fila
         self.queue = []
 
 
 
-    def doBFS(self):
+    def Do(self):
         if self.root == None or self.final == None:
             print('Error: some limit has overflow.')
             return 
@@ -23,7 +25,7 @@ class BFS(baseSearch):  # Herança
             self.currentNode = self.queue.pop(0)
 
             # Expansao da coordenada
-            if self.currentNode is not None:
+            if self.currentNode is not None and self.findNode(self.currentNode):
                 # Marca como visitada
                 self.visitedNodes.append(self.currentNode)
 
@@ -35,18 +37,23 @@ class BFS(baseSearch):  # Herança
 
                 # Gera as coordenadas vizinhas
                 neighbors = [
-                    self.f1(self.currentNode),
-                    self.f2(self.currentNode),
-                    self.f3(self.currentNode),
-                    self.f4(self.currentNode)
+                    (1,self.f1(self.currentNode)),
+                    (2,self.f2(self.currentNode)),
+                    (3,self.f3(self.currentNode)),
+                    (4,self.f4(self.currentNode))
                 ]
 
-                for neighbor in neighbors:
+                if self.random:
+                    random.shuffle(neighbors)
+
+                for i,neighbor in neighbors:
                     if neighbor is not None:
                         # Marca o nó como nó gerado
                         self.genNodes.append(neighbor)
                     # Verifica se o nó já foi expandido
                     if neighbor is not None and self.findNode(neighbor):
+                        # Atualiza o custo
+                        self.costFunc(neighbor,i)
                         # Coloca o nó na fila e coloca o nó na lista dos filhos do pai
                         self.queue.append(neighbor)  
                         self.currentNode.sons.append(neighbor)

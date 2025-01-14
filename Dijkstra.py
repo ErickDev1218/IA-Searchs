@@ -8,7 +8,7 @@ class Dijkstra(baseSearch):
         # Dijkstra usa uma heap minima
         self.heap = []
 
-    def doDijkstra(self):
+    def Do(self):
         if self.root == None or self.final == None:
             print('Error: some limit has overflow.')
             return 

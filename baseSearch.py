@@ -132,6 +132,8 @@ class baseSearch:
             path.append(current)
             current = current.dad
         path.append(current)
+        # initialNode = f'Initial node: ({self.root.x},{self.root.y})'
+        # finalNode = f'Objective node: ({self.final.x},{self.final.y})'
         print(f'Initial node: ({self.root.x},{self.root.y})')
         print(f'Objective node: ({self.final.x},{self.final.y})')
         print('Path found:')
