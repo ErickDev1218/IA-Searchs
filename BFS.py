@@ -47,11 +47,10 @@ class BFS(baseSearch):  # Herança
                     random.shuffle(neighbors)
 
                 for i,neighbor in neighbors:
-                    if neighbor is not None:
-                        # Marca o nó como nó gerado
-                        self.genNodes.append(neighbor)
                     # Verifica se o nó já foi expandido
                     if neighbor is not None and self.findNode(neighbor):
+                        # Coloca o nó na lista de nós gerados
+                        self.genNodes.append(neighbor)
                         # Atualiza o custo
                         self.costFunc(neighbor,i)
                         # Coloca o nó na fila e coloca o nó na lista dos filhos do pai

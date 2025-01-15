@@ -8,6 +8,7 @@ class Node:
         self.cost = 0 if dad is None else dad.cost
         self.sons = []
         self.costToTarget = 0
+        self.passedThroughIntermediate = dad.passedThroughIntermediate if dad else False
 
     #Sobrecarga do operador < para usar na heap
     def __lt__(self, node : 'Node'):

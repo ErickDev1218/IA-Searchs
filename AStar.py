@@ -2,9 +2,9 @@ from baseSearch import baseSearch
 from Node import Node
 import itertools
 
-realObj = 0
+# realObj = 0
 
-# Greedy Best-First Search
+# A* Search
 class AStar(baseSearch):
     def __init__(self, iniX : int, iniY: int, destX: int, destY: int, typeCost: int, typeHeuristic: int):
         super().__init__(iniX, iniY, destX, destY, typeCost, typeHeuristic)
@@ -71,42 +71,59 @@ class AStar(baseSearch):
                 continue
         print('Path not found')
 
-    def DoInter(self, medX, medY):
+    def DoInter(self, intermeds):
+ 
         if self.root == None or self.final == None:
             print('Error: some limit has overflow.')
             return
-        auxNode = self.final
+        
         auxIni = self.root
-
-        self.final = Node(medX, medY)
+        self.Intermediates = intermeds
 
         #Primeiro elemento da heap é o root
         self.add_to_queue(self.root)     
+
+        flag = True
         while self.queue:
             # Remocao da tripla de (Distancia ate o no, ordem de criacao, nó)
             _,_, self.currentNode = self.pop_from_queue()
 
             # Expansao da coordenada
             if self.currentNode is not None and self.findNode(self.currentNode):
-                # Marca como visitada
-                self.visitedNodes.append(self.currentNode)
-            
-                # Checa se não é o objetivo
-                global realObj
-                if self.isObjective(self.currentNode):
-                    if realObj == 1:
-                        print('Objective found!')
-                        self.root = auxIni
-                        self.findPath(self.currentNode)
-                        return
-                    
-                    self.final = auxNode
-                    self.root = self.currentNode
-                    self.queue.clear()
-                    self.add_to_queue(self.root)
-                    self.visitedNodes = []
-                    realObj = 1
 
+                # Marca como visitada caso seja diferente do objetivo
+                
+                self.visitedNodes.append(self.currentNode)
+
+                # Checa se é o objetivo e já passou por um intermediário
+                if self.isObjective(self.currentNode) and self.currentNode.passedThroughIntermediate:
+                    self.root = auxIni
+                    self.visitedNodes.append(self.currentNode)
+                    self.visitedNodes += self.visitedAux
+                    print('Objective found!')
+                    self.findPath(self.currentNode)
+
+                    string = 'Intermediate points available: '
+                    for x in self.Intermediates:
+                        string += f"({x.x},{x.y}), "
+                    print(string)
+
+                    print(f'Intermediate point used: ({self.Intermediate.x},{self.Intermediate.y})')
+
+                    return
+                
+                # Checa se o nó atual é um intermediário, caso seja atualiza a flag do caminho
+                if self.isIntermediate(self.currentNode) and flag:
+                    self.currentNode.passedThroughIntermediate = True
+                    self.root = self.currentNode
+                    self.queue = []
+                    self.add_to_queue(self.root)
+                    self.visitedAux = self.visitedNodes
+                    self.visitedNodes = []
+                    self.Intermediate = self.currentNode
+                    flag = False
+                    # print(self.currentNode.passedThroughIntermediate)
+                    
 
                 # Gera as coordenadas vizinhas
                 neighbors = [
@@ -117,11 +134,10 @@ class AStar(baseSearch):
                 ]
 
                 for i,neighbor in enumerate(neighbors,start=1):
-                    if neighbor is not None:
-                        # Marca o nó como nó gerado
-                        self.genNodes.append(neighbor)
-                    # Verifica se o nó já foi expandido
+                    # Verifica se o nó ja foi expandido
                     if neighbor is not None and self.findNode(neighbor):
+                        # Coloca o nó na lista de nós gerados
+                        self.genNodes.append(neighbor)
                         # Atualiza o custo do caminho de acordo com a funcao de custo 
                         self.costFunc(neighbor, i)
                         # Calcula o f(n) = g(n) + h(n)
@@ -132,4 +148,5 @@ class AStar(baseSearch):
                         self.currentNode.sons.append(neighbor)
             else:
                 continue
+
         print('Path not found')

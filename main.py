@@ -3,11 +3,73 @@ from BFS import BFS
 from AStar import AStar
 from Dijkstra import Dijkstra
 from GBFS import GBFS
+from Node import Node
 import random
 import sys
 import pandas as pd
 from io import StringIO
 import re
+
+def process_txt_to_dataframe(file_path):
+    # Abrir o arquivo e ler o conteúdo
+    with open(file_path, "r") as file:
+        data = file.read()
+    
+    # Dividir o conteúdo em blocos, considerando o separador "*** ---------------------- ***"
+    blocks = data.split("*** ---------------------- ***")
+    
+    # Lista para armazenar os resultados processados
+    results = []
+
+    # Processar cada bloco
+    for block in blocks:
+        if block.strip():  # Ignorar blocos vazios
+            # Extrair informações obrigatórias
+            initial_match = re.search(r"Initial: \((\d+,\d+)\)", block)
+            final_match = re.search(r"final: \((\d+,\d+)\)", block)
+            initial = f"({initial_match.group(1)})"
+            final = f"({final_match.group(1)})"
+            cost_function = re.search(r"cost function: (c\d+)", block).group(1)
+            algorithm = re.search(r"Used algorithm: (\w+)", block).group(1)
+            objective_found = "Objective found!" in block
+            path_cost = re.search(r"Path cost: (\d+)", block).group(1)
+            generated_nodes = re.search(r"Generated nodes: (\d+)", block).group(1)
+            visited_nodes = re.search(r"Visited nodes: (\d+)", block).group(1)
+            
+            # Verificar campos opcionais
+            heuristic_match = re.search(r"heuristic: (\w+)", block)
+            randomization_match = re.search(r"randomization: (\w+)", block)
+            intermediate_match = re.search(r"Intermediate point used: \((\d+,\d+)\)", block)
+            
+            # Valores opcionais
+            heuristic = heuristic_match.group(1) if heuristic_match else None
+            randomization = randomization_match.group(1) if randomization_match else None
+            intermediate = f"({intermediate_match.group(1)})" if intermediate_match else None
+            
+            # Adicionar ao resultado
+            results.append([
+                initial, final, cost_function, algorithm, objective_found,
+                path_cost, generated_nodes, visited_nodes, heuristic, randomization, intermediate
+            ])
+    
+    # Colunas do DataFrame
+    columns = [
+        "Initial", "Final", "Cost Function", "Algorithm", "Objective Found",
+        "Path Cost", "Generated Nodes", "Visited Nodes", "Heuristic", "Randomization", "Intermediate"
+    ]
+    
+    # Converter para DataFrame
+    df = pd.DataFrame(results, columns=columns)
+
+    # Checa se utiliza Heuristica e Randomization
+    if df["Heuristic"].isna().all():
+        df = df.drop(columns=["Heuristic"])
+    if df["Randomization"].isna().all():
+        df = df.drop(columns=["Randomization"])
+    if df["Intermediate"].isna().all():
+        df = df.drop(columns=["Intermediate"])
+
+    return df
 
 def exp0():
     iniX = random.randint(0,30)
@@ -122,65 +184,33 @@ def exp4():
                         print('\n*** ---------------------- ***\n')
 
 def exp5():
-    print("kkkkk")
+    with open("Experimento-5.txt", "w") as file:
+        for _ in range(25):
+            iniX = random.randint(0,30)
+            iniY = random.randint(0,30)
+            finX = random.randint(0,30)
+            finY = random.randint(0,30)
+            inter1X = random.randint(0,30)
+            inter1Y = random.randint(0,30)
+            inter2X = random.randint(0,30)
+            inter2Y = random.randint(0,30)
+            inter3X = random.randint(0,30)
+            inter3Y = random.randint(0,30)
+            inter4X = random.randint(0,30)
+            inter4Y = random.randint(0,30)
+
+            intermeds = [Node(inter1X, inter1Y), Node(inter2X, inter2Y), Node(inter3X, inter3Y), Node(inter4X, inter4Y)]
+ 
+            for typeCost in range(1,5):
+                for typeHeuristic in range(1,3):
+                    v = AStar(iniX,iniY,finX,finY,typeCost,typeHeuristic)
+                    sys.stdout = file
+                    print(f'Used algorithm: A*')
+                    print(f'\nInitial: ({iniX},{iniY}), final: ({finX},{finY}), cost function: c{typeCost}, heuristic function: h{typeHeuristic}\n')
+                    v.DoInter(intermeds)
+                    print('\n*** ---------------------- ***\n')
 
 
-def process_txt_to_dataframe(file_path):
-    # Abrir o arquivo e ler o conteúdo
-    with open(file_path, "r") as file:
-        data = file.read()
-    
-    # Dividir o conteúdo em blocos, considerando o separador "*** ---------------------- ***"
-    blocks = data.split("*** ---------------------- ***")
-    
-    # Lista para armazenar os resultados processados
-    results = []
-
-    # Processar cada bloco
-    for block in blocks:
-        if block.strip():  # Ignorar blocos vazios
-            # Extrair informações obrigatórias
-            initial_match = re.search(r"Initial: \((\d+,\d+)\)", block)
-            final_match = re.search(r"final: \((\d+,\d+)\)", block)
-            initial = f"({initial_match.group(1)})"
-            final = f"({final_match.group(1)})"
-            cost_function = re.search(r"cost function: (c\d+)", block).group(1)
-            algorithm = re.search(r"Used algorithm: (\w+)", block).group(1)
-            objective_found = "Objective found!" in block
-            path_cost = re.search(r"Path cost: (\d+)", block).group(1)
-            generated_nodes = re.search(r"Generated nodes: (\d+)", block).group(1)
-            visited_nodes = re.search(r"Visited nodes: (\d+)", block).group(1)
-            
-            # Verificar campos opcionais
-            heuristic_match = re.search(r"heuristic: (\w+)", block)
-            randomization_match = re.search(r"randomization: (\w+)", block)
-            
-            # Valores opcionais
-            heuristic = heuristic_match.group(1) if heuristic_match else None
-            randomization = randomization_match.group(1) if randomization_match else None
-            
-            # Adicionar ao resultado
-            results.append([
-                initial, final, cost_function, algorithm, objective_found,
-                path_cost, generated_nodes, visited_nodes, heuristic, randomization
-            ])
-    
-    # Colunas do DataFrame
-    columns = [
-        "Initial", "Final", "Cost Function", "Algorithm", "Objective Found",
-        "Path Cost", "Generated Nodes", "Visited Nodes", "Heuristic", "Randomization"
-    ]
-    
-    # Converter para DataFrame
-    df = pd.DataFrame(results, columns=columns)
-
-    # Checa se utiliza Heuristica e Randomization
-    if df["Heuristic"].isna().all():
-        df = df.drop(columns=["Heuristic"])
-    if df["Randomization"].isna().all():
-        df = df.drop(columns=["Randomization"])
-
-    return df
 
 
 def main():
@@ -188,23 +218,28 @@ def main():
     # df_results
     # df_results.to_csv("Experimento-1.csv", index=False)
     # Caminho para o arquivo .txt
-    # exp1_txt()
-    # exp2_txt()
 
+    # exp5()
 
-    # file_path = "Experimento-4.txt"
+    file_path = "Experimento-5.txt"
 
     # Processar o arquivo e criar o DataFrame
-    # df_results = process_txt_to_dataframe(file_path)
+    df_results = process_txt_to_dataframe(file_path)
 
     # Exibir o DataFrame
-    # print(df_results)
+    print(df_results)
 
     # Salvar como CSV (opcional)
-    # df_results.to_csv("Experimento-4.csv", index=False)
+    df_results.to_csv("Experimento-5.csv", index=False)
 
-    a = AStar(0,0,0,3,1,1)
-    a.DoInter(2,2)
+    # a = BFS(0,0,2,2,1)
+    # a = BFS(0,0,3,3,1,1)
+    # a.Do()
+    # intermedios = [Node(1,4), Node(1,2)]
+    # a.DoInter(intermedios)
+    
+
+    # a.Do()
 
 
 main()
