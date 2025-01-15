@@ -77,12 +77,16 @@ class AStar(baseSearch):
             print('Error: some limit has overflow.')
             return
         
+        # Guarda o valor do nó inicial
         auxIni = self.root
+
+        # Atualiza os nós intermediários
         self.Intermediates = intermeds
 
         #Primeiro elemento da heap é o root
         self.add_to_queue(self.root)     
 
+        #flag utilizada para entrar no if da linha 119 apenas uma vez
         flag = True
         while self.queue:
             # Remocao da tripla de (Distancia ate o no, ordem de criacao, nó)
@@ -90,15 +94,15 @@ class AStar(baseSearch):
 
             # Expansao da coordenada
             if self.currentNode is not None and self.findNode(self.currentNode):
-
-                # Marca como visitada caso seja diferente do objetivo
                 
+                # Coloca nó atual nos visitados
                 self.visitedNodes.append(self.currentNode)
 
                 # Checa se é o objetivo e já passou por um intermediário
                 if self.isObjective(self.currentNode) and self.currentNode.passedThroughIntermediate:
                     self.root = auxIni
                     self.visitedNodes.append(self.currentNode)
+                    # Recupera o valor total de visitados
                     self.visitedNodes += self.visitedAux
                     print('Objective found!')
                     self.findPath(self.currentNode)
@@ -112,12 +116,13 @@ class AStar(baseSearch):
 
                     return
                 
-                # Checa se o nó atual é um intermediário, caso seja atualiza a flag do caminho
+                # Checa se o nó atual é um intermediário, caso seja atualiza a flag do caminho, e recomeça a busca a partir do nó atual até o objetivo
                 if self.isIntermediate(self.currentNode) and flag:
                     self.currentNode.passedThroughIntermediate = True
                     self.root = self.currentNode
                     self.queue = []
                     self.add_to_queue(self.root)
+                    #Guarda o vetor atual de visitados
                     self.visitedAux = self.visitedNodes
                     self.visitedNodes = []
                     self.Intermediate = self.currentNode
