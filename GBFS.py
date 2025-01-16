@@ -55,11 +55,10 @@ class GBFS(baseSearch):
                 ]
 
                 for i,neighbor in enumerate(neighbors,start=1):
-                    if neighbor is not None:
-                        # Marca o nó como nó gerado
-                        self.genNodes.append(neighbor)
-                    # Verifica se o nó já foi expandido
+                    # Verifica se o nó ja foi expandido
                     if neighbor is not None and self.findNode(neighbor):
+                        # Coloca o nó na lista de nós gerados
+                        self.genNodes.append(neighbor)
                         # Atualiza o custo do caminho de acordo com a funcao de custo
                         self.costFunc(neighbor, i)
                         # Calcula a heuristica

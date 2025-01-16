@@ -24,6 +24,7 @@ class baseSearch:
         self.heuristicCost = heuristicCost # Guarda o tipo de heuristica usada 
         self.costFunc = self.__choiceFunc(typeCost) # Escolhe a funcao de custo que será aplicada.
         self.heuristicFunc = self.__heuristicFunc(heuristicCost) # Escolhe a funcao heuristica que será aplicada.
+        self.Intermediates = [] # Array que guarda nós intermediários
 
     # Funcao que decide qual tipo de heuristica será usada
     def __heuristicFunc(self, choice : int):
@@ -111,6 +112,12 @@ class baseSearch:
         else:
             return False
         
+    def isIntermediate(self, node : Node) -> bool:
+        for currentInt in self.Intermediates:
+            if node.x == currentInt.x and node.y == currentInt.y:
+                return True
+        return False
+
     # Funcao que limita o espaco de busca (0,0) e (30,30)
     def limit(self, x : int, y: int):
         if (x > 30 or x < 0) or (y > 30 or y < 0):
