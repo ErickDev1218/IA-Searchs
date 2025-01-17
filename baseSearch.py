@@ -107,7 +107,8 @@ class baseSearch:
 
     # Funcao que verifica se o objetivo foi alcancado
     def isObjective(self, node : Node) -> bool:
-        if node.x == self.final.x and node.y == self.final.y:
+        # Adicionado teste de passedThrough, nao afetara os demais experimentos, pois nestes, sempre serao False
+        if node.x == self.final.x and node.y == self.final.y and node.passedThroughIntermediate == self.final.passedThroughIntermediate:
             return True
         else:
             return False
@@ -127,7 +128,8 @@ class baseSearch:
     # Funcao que verifica se o nó já foi expandido
     def findNode(self, node : Node) -> bool:
         for n in self.visitedNodes:
-            if(n.x == node.x and n.y == node.y):
+            # Adicionado teste de passedThrough, nao afetara os demais experimentos, pois nestes, sempre serao False
+            if(n.x == node.x and n.y == node.y and n.passedThroughIntermediate == node.passedThroughIntermediate):
                 return False
         return True
     
