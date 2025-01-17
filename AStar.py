@@ -24,12 +24,20 @@ class AStar(baseSearch):
         # Remove e retorna o próximo nó
         return self.queue.pop(0) if self.queue else None
     
-    def Do(self):
+    def Do(self, intermeds: Node = []):
+    
         if self.root == None or self.final == None:
             print('Error: some limit has overflow.')
             return
+        # Atualiza o vetor de pontos de interesse
+        if intermeds: 
+            self.Intermediates = intermeds
+            self.final.passedThroughIntermediate = True
+        
+
         #Primeiro elemento da heap é o root
         self.add_to_queue(self.root)     
+
         while self.queue:
             # Remocao da tripla de (Distancia ate o no, ordem de criacao, nó)
             _,_, self.currentNode = self.pop_from_queue()
@@ -39,11 +47,25 @@ class AStar(baseSearch):
                 # Marca como visitada
                 self.visitedNodes.append(self.currentNode)
             
+                # Caso seja passado uma lista de pontos de interesse, checa se e um ponto de interesse e atualiza o valor de passedThroughIntermediate
+                if self.Intermediates:
+                    if self.isIntermediate(self.currentNode):
+                        self.currentNode.passedThroughIntermediate = True
+                        self.Intermediate = self.currentNode
+
                 # Checa se não é o objetivo
                 if self.isObjective(self.currentNode):
                     print('Objective found!')
                     self.findPath(self.currentNode)
-                    return
+                    if intermeds:
+                        string = 'Intermediate points available: '
+                        for x in self.Intermediates:
+                            string += f"({x.x},{x.y}), "
+                        print(string)
+
+                        print(f'Intermediate point used: ({self.Intermediate.x},{self.Intermediate.y})')
+                        return
+                
 
                 # Gera as coordenadas vizinhas
                 neighbors = [
@@ -69,89 +91,3 @@ class AStar(baseSearch):
                         self.currentNode.sons.append(neighbor)
             else:
                 continue
-        print('Path not found')
-
-    def DoInter(self, intermeds):
- 
-        if self.root == None or self.final == None:
-            print('Error: some limit has overflow.')
-            return
-        
-        # Guarda o valor do nó inicial
-        auxIni = self.root
-
-        # Atualiza os nós intermediários
-        self.Intermediates = intermeds
-
-        #Primeiro elemento da heap é o root
-        self.add_to_queue(self.root)     
-
-        #flag utilizada para entrar no if da linha 119 apenas uma vez
-        flag = True
-        while self.queue:
-            # Remocao da tripla de (Distancia ate o no, ordem de criacao, nó)
-            _,_, self.currentNode = self.pop_from_queue()
-
-            # Expansao da coordenada
-            if self.currentNode is not None and self.findNode(self.currentNode):
-                
-                # Coloca nó atual nos visitados
-                self.visitedNodes.append(self.currentNode)
-
-                # Checa se é o objetivo e já passou por um intermediário
-                if self.isObjective(self.currentNode) and self.currentNode.passedThroughIntermediate:
-                    self.root = auxIni
-                    self.visitedNodes.append(self.currentNode)
-                    # Recupera o valor total de visitados
-                    self.visitedNodes += self.visitedAux
-                    print('Objective found!')
-                    self.findPath(self.currentNode)
-
-                    string = 'Intermediate points available: '
-                    for x in self.Intermediates:
-                        string += f"({x.x},{x.y}), "
-                    print(string)
-
-                    print(f'Intermediate point used: ({self.Intermediate.x},{self.Intermediate.y})')
-
-                    return
-                
-                # Checa se o nó atual é um intermediário, caso seja atualiza a flag do caminho, e recomeça a busca a partir do nó atual até o objetivo
-                if self.isIntermediate(self.currentNode) and flag:
-                    self.currentNode.passedThroughIntermediate = True
-                    self.root = self.currentNode
-                    self.queue = []
-                    self.add_to_queue(self.root)
-                    #Guarda o vetor atual de visitados
-                    self.visitedAux = self.visitedNodes
-                    self.visitedNodes = []
-                    self.Intermediate = self.currentNode
-                    flag = False
-                    # print(self.currentNode.passedThroughIntermediate)
-                    
-
-                # Gera as coordenadas vizinhas
-                neighbors = [
-                    self.f1(self.currentNode),
-                    self.f2(self.currentNode),
-                    self.f3(self.currentNode),
-                    self.f4(self.currentNode)
-                ]
-
-                for i,neighbor in enumerate(neighbors,start=1):
-                    # Verifica se o nó ja foi expandido
-                    if neighbor is not None and self.findNode(neighbor):
-                        # Coloca o nó na lista de nós gerados
-                        self.genNodes.append(neighbor)
-                        # Atualiza o custo do caminho de acordo com a funcao de custo 
-                        self.costFunc(neighbor, i)
-                        # Calcula o f(n) = g(n) + h(n)
-                        neighbor.costToTarget = self.heuristicFunc(neighbor) + neighbor.cost
-                        # Adiciona a fila
-                        self.add_to_queue(neighbor)
-                        # Coloca o nó na lista dos filhos do pai
-                        self.currentNode.sons.append(neighbor)
-            else:
-                continue
-
-        print('Path not found')
