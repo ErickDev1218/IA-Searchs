@@ -7,6 +7,13 @@ from Dijkstra import Dijkstra
 from Node import Node
 
 def main():
+    
+    # Implementado por:
+    # Antonio Erick Freitas Ferreira
+    # Matheus Conrado Pires
+    # Mario Martins Aragao
+
+
     # A função makeExp() está comentada para que se alguém recompile este código
     # novamente os experimentos já criados não sejam alterados
     # tornando nossa análise incorreta.
