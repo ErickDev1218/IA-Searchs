@@ -7,14 +7,14 @@ from Dijkstra import Dijkstra
 from Node import Node
 
 def main():
-    # Esta função está comentada para que se alguém recompile este código
+    # A função makeExp() está comentada para que se alguém recompile este código
     # novamente os experimentos já criados não sejam alterados
     # tornando nossa análise incorreta.
     
     # makeExp() 
 
     # Aqui está a escrita dos métodos pré-definidas para testes 
-    # individuais e com parâmetros própios.
+    # individuais e com parâmetros próprios.
     # É necessário apenas remover dos comentários e colocar os
     # parâmetros conforme é discutido no relatório.
 
