@@ -29,6 +29,7 @@ Esta classe deve ter os seguintes parâmetros respectivamente:
 - **Y inicial,**
 - **X final,**
 - **Y final,**
+- **Função de custo**
   - número inteiro de 1 a 4 (representa a função de custo),
 - **True**
   - (este parâmetro é opcional e só deve ser passado se você desejar utilizar randomização de vizinhança).
@@ -40,28 +41,63 @@ DFS(0,0,1,1,3) #(0,0) -> (1,1) utilizando c3 e sem randomização de vizinhança
 
 
 ## Busca em largura (BFS):
-Esta classe deve ter os seguintes parâmetros respectivamente: X inicial, Y inicial, X final, Y final, número inteiro de 1 a 4 (representa a função de custo), True (este parâmetro é opcional e só deve ser passado se você desejar utilizar randomização de vizinhança).
+Esta classe deve ter os seguintes parâmetros respectivamente:
+- **X inicial,**
+- **Y inicial,**
+- **X final,**
+- **Y final,**
+- **Função de custo**
+  - número inteiro de 1 a 4 (representa a função de custo),
+- **True**
+  - (este parâmetro é opcional e só deve ser passado se você desejar utilizar randomização de vizinhança).
+
 Exemplo:
 ```python
 BFS(0,0,1,1,3) # (0,0) -> (1,1) utilizando c3 e sem randomização de vizinhança.
 ```
 
 ## Custo uniforme (Dijkstra):
-Esta classe deve ter os seguintes parâmetros respectivamente: X inicial, Y inicial, X final, Y final, número inteiro de 1 a 4 (representa a função de custo).
+Esta classe deve ter os seguintes parâmetros respectivamente:
+- **X inicial,**
+- **Y inicial,**
+- **X final,**
+- **Y final,**
+- **Função de custo**
+  - número inteiro de 1 a 4 (representa a função de custo),
+
+
 Exemplo: 
 ```python
 Dijkstra(0,0,1,1,3) # (0,0) -> (1,1) utilizando c3.
 ```
 
 ## Busca gulosa (GBFS):
-Esta classe deve ter os seguintes parâmetros respectivamente: X inicial, Y inicial, X final, Y final, número inteiro de 1 a 4 (representa a função de custo), número inteiro de 1 a 2 (representa a função heurística).
+Esta classe deve ter os seguintes parâmetros respectivamente:
+- **X inicial,**
+- **Y inicial,**
+- **X final,**
+- **Y final,**
+- **Função de custo**
+  - número inteiro de 1 a 4 (representa a função de custo),
+- **Função heurística**
+  - número inteiro de 1 a 2 (representa a função heurística),
+
 Exemplo:
 ```python
 GBFS(0,0,1,1,3,1) # (0,0) -> (1,1) utilizando c3 e h1.
 ```
 
 ## A* (AStar):
-Esta classe deve ter os seguintes parâmetros respectivamente: X inicial, Y inicial, X final, Y final, número inteiro de 1 a 4 (representa a função de custo), número inteiro de 1 a 2 (representa a função heurística).
+Esta classe deve ter os seguintes parâmetros respectivamente:
+- **X inicial,**
+- **Y inicial,**
+- **X final,**
+- **Y final,**
+- **Função de custo**
+  - número inteiro de 1 a 4 (representa a função de custo),
+- **Função heurística**
+  - número inteiro de 1 a 2 (representa a função heurística),
+  
 Exemplo: 
 ```python
 AStar(0,0,1,1,3,1) # (0,0) -> (1,1) utilizando c3 e h1.
