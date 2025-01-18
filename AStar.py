@@ -51,7 +51,6 @@ class AStar(baseSearch):
                 if self.Intermediates:
                     if self.isIntermediate(self.currentNode):
                         self.currentNode.passedThroughIntermediate = True
-                        self.Intermediate = self.currentNode
 
                 # Checa se não é o objetivo
                 if self.isObjective(self.currentNode):
@@ -62,8 +61,6 @@ class AStar(baseSearch):
                         for x in self.Intermediates:
                             string += f"({x.x},{x.y}), "
                         print(string)
-
-                        print(f'Intermediate point used: ({self.Intermediate.x},{self.Intermediate.y})')
                         return
                 
 

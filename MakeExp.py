@@ -217,7 +217,7 @@ def exp5():
                     sys.stdout = file
                     print(f'Used algorithm: A*')
                     print(f'\nInitial: ({iniX},{iniY}), final: ({finX},{finY}), cost function: c{typeCost}, heuristic: h{typeHeuristic}\n')
-                    v.DoInter(intermeds)
+                    v.Do(intermeds)
                     print('\n*** ---------------------- ***\n')
     sys.stdout = original_stdout
 
